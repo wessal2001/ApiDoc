@@ -2,7 +2,7 @@ package fr.norsys.ApiDoc.service;
 
 import fr.norsys.ApiDoc.exception.NotFoundException;
 import fr.norsys.ApiDoc.model.User;
-import fr.norsys.ApiDoc.repository.impl.UserRepositoryImpl;
+import fr.norsys.ApiDoc.repository.impl.UserDaoImpl;
 import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService {
 
-    private final UserRepositoryImpl userRepository;
+    private final UserDaoImpl userRepository;
     public User saveUser(User request){
          userRepository.save(request);
          return User.builder().username(request.getUsername())

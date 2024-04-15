@@ -1,7 +1,7 @@
 package fr.norsys.ApiDoc.repository.impl;
 
 import fr.norsys.ApiDoc.model.User;
-import fr.norsys.ApiDoc.repository.UserRepository;
+import fr.norsys.ApiDoc.repository.UserDao;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -17,7 +17,7 @@ import java.util.Properties;
 @Repository
 @AllArgsConstructor
 @Slf4j
-public class UserRepositoryImpl implements UserRepository {
+public class UserDaoImpl implements UserDao {
 private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 private final Properties sqlProperties;
 private static final String USER_ID = "id";
