@@ -2,7 +2,7 @@ package fr.norsys.ApiDoc.service;
 
 import fr.norsys.ApiDoc.exception.NotFoundException;
 import fr.norsys.ApiDoc.model.User;
-import fr.norsys.ApiDoc.repository.UserRepositoryImpl;
+import fr.norsys.ApiDoc.repository.impl.UserRepositoryImpl;
 import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;

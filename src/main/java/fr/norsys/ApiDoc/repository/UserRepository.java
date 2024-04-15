@@ -1,4 +1,4 @@
-package fr.norsys.ApiDoc.repository.impl;
+package fr.norsys.ApiDoc.repository;
 
 import fr.norsys.ApiDoc.model.User;
 import org.springframework.dao.DataAccessException;

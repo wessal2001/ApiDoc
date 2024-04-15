@@ -1,7 +1,7 @@
-package fr.norsys.ApiDoc.repository;
+package fr.norsys.ApiDoc.repository.impl;
 
 import fr.norsys.ApiDoc.model.User;
-import fr.norsys.ApiDoc.repository.impl.UserRepository;
+import fr.norsys.ApiDoc.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
