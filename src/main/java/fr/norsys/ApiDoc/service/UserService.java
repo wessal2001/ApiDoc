@@ -15,8 +15,10 @@ public class UserService {
 
     private final UserDaoImpl userRepository;
     public User saveUser(User request){
-         userRepository.save(request);
-         return User.builder().username(request.getUsername())
+        Long idUser= userRepository.save(request);
+         return User.builder()
+                 .idUser(idUser)
+                 .username(request.getUsername())
                  .password(request.getPassword())
                  .email(request.getEmail()).build();
     }

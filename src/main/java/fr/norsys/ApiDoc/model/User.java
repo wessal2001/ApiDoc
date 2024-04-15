@@ -12,13 +12,18 @@ import java.sql.SQLException;
 @Getter
 @Setter
 public class User {
-    private long id;
+    private long idUser;
     private String username;
     private String password;
     private String email;
+    public User(String username,String password,String mail){
+        this.username=username;
+        this.password=password;
+        this.email=mail;
+    }
     public static User baseMapper(ResultSet resultSet, int rowNumber) throws SQLException {
         User user = new User();
-        user.setId(resultSet.getLong("idUser"));
+        user.setIdUser(resultSet.getLong("idUser"));
         user.setEmail(resultSet.getString("email"));
         user.setPassword((resultSet.getString("password")));
         user.setUsername(resultSet.getString("username"));

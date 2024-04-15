@@ -25,6 +25,8 @@ private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 @Resource(name = "sqlQueries")
 private final Properties sqlProperties;
 private static final String USER_ID = "id";
+private static final String USER_Id = "idUser";
+
 private static final String USER_GET_ALL="user.getAll";
 private static final String USER_GET_ONE="user.getOne";
 private static final String USER_CREATE="user.create";
@@ -32,7 +34,7 @@ private static final String USER_CREATE="user.create";
     public long save(User user){
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        namedParameterJdbcTemplate.update(sqlProperties.getProperty(USER_CREATE), getUserParams(user), keyHolder, new String[]{USER_ID});
+        namedParameterJdbcTemplate.update(sqlProperties.getProperty(USER_CREATE), getUserParams(user), keyHolder, new String[]{USER_Id});
         return keyHolder.getKey().longValue();
 
     }
