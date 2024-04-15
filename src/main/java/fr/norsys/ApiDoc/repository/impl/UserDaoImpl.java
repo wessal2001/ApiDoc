@@ -1,9 +1,12 @@
 package fr.norsys.ApiDoc.repository.impl;
 
+import ch.qos.logback.core.Context;
 import fr.norsys.ApiDoc.model.User;
 import fr.norsys.ApiDoc.repository.UserDao;
+import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,6 +22,7 @@ import java.util.Properties;
 @Slf4j
 public class UserDaoImpl implements UserDao {
 private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+@Resource(name = "sqlQueries")
 private final Properties sqlProperties;
 private static final String USER_ID = "id";
 private static final String USER_GET_ALL="user.getAll";
@@ -27,6 +31,7 @@ private static final String USER_CREATE="user.create";
 
     public long save(User user){
         KeyHolder keyHolder = new GeneratedKeyHolder();
+
         namedParameterJdbcTemplate.update(sqlProperties.getProperty(USER_CREATE), getUserParams(user), keyHolder, new String[]{USER_ID});
         return keyHolder.getKey().longValue();
 

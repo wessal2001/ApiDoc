@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 @Getter
@@ -21,5 +23,14 @@ public class Document {
     private String type;
     private Date dateCreation;
     private String urlDocument;
+    public static Document baseMapper(ResultSet resultSet, int rowNumber) throws SQLException {
+        Document document = new Document();
+        document.setIdDocument(resultSet.getInt("ID_DOCUMENT"));
+        document.setNom(resultSet.getString("NOM"));
+        document.setType(resultSet.getString("TYPE"));
+        document.setDateCreation(resultSet.getDate("DATE_CREATION"));
+        document.setUrlDocument(resultSet.getString("URL_CREATION"));
 
+        return document;
+    }
 }
