@@ -49,7 +49,7 @@ public class DocumentDaoImpl implements DocumentDao {
 
     @Override
     public List<Document> getAllDocuments() {
-        return jdbcTemplate.query(properties.getProperty(SELECT_DOCUMENTS),getRowMapper());
+        return jdbcTemplate.query(properties.getProperty(SELECT_DOCUMENTS),Document::baseMapper);
     }
 
     @Override
