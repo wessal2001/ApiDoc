@@ -2,6 +2,7 @@ package fr.norsys.ApiDoc.repository;
 
 import fr.norsys.ApiDoc.model.User;
 import fr.norsys.ApiDoc.repository.impl.UserDaoImpl;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -11,10 +12,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class UserDaoTest extends BaseTest{
     @Autowired
-    private UserDaoImpl userDao;
+  UserDaoImpl userDao;
 
     @Test
     @Rollback

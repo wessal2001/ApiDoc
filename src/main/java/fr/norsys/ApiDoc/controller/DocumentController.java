@@ -2,6 +2,7 @@ package fr.norsys.ApiDoc.controller;
 
 import fr.norsys.ApiDoc.model.Document;
 import fr.norsys.ApiDoc.service.DocumentService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +24,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/api/documents")
+@RequiredArgsConstructor
 public class DocumentController {
 
-    @Autowired
-    DocumentService documentService;
+
+    private final DocumentService documentService;
 
     @GetMapping
     ResponseEntity<List<Document>>getAllDocuments(){

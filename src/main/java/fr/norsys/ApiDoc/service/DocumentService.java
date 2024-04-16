@@ -3,6 +3,7 @@ package fr.norsys.ApiDoc.service;
 import fr.norsys.ApiDoc.exception.NotFoundException;
 import fr.norsys.ApiDoc.model.Document;
 import fr.norsys.ApiDoc.repository.DocumentDao;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,9 +22,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class DocumentService {
-    @Autowired
-    DocumentDao documentDao;
+
+    private final DocumentDao documentDao;
 
     public List<Document> getAllDocuments() {
         return documentDao.getAllDocuments();

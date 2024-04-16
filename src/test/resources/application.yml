@@ -16,4 +16,7 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     validateOnMigrate: true
+file:
+  storage:
+    location: C:/Users/CePC/Desktop/docsStorage
 

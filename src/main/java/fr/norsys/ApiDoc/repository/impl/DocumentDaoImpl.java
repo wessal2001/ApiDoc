@@ -3,8 +3,9 @@ package fr.norsys.ApiDoc.repository.impl;
 import fr.norsys.ApiDoc.model.Document;
 import fr.norsys.ApiDoc.repository.DocumentDao;
 import jakarta.annotation.Resource;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,6 +29,7 @@ import java.util.Properties;
 
 
 @Repository
+@RequiredArgsConstructor
 @Slf4j
 public class DocumentDaoImpl implements DocumentDao {
 
@@ -39,13 +41,12 @@ public class DocumentDaoImpl implements DocumentDao {
     private static final String INSERT_DOCUMENT="insert.document";
 
     @Value("${file.storage.location}")
-    private String storageLocation;
+    private  String storageLocation;
 
-    @Autowired
-    NamedParameterJdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Resource(name = "docProperties")
-    Properties properties;
+    private final Properties properties;
 
     @Override
     public List<Document> getAllDocuments() {
@@ -118,15 +119,7 @@ public class DocumentDaoImpl implements DocumentDao {
     }
 
 
-    private RowMapper<Document> getRowMapper() {
-        return (rs, rowNum) -> Document.builder()
-                .idDocument(rs.getInt("ID_DOCUMENT"))
-                .nom(rs.getString("NOM"))
-                .type(rs.getString("TYPE"))
-                .dateCreation(rs.getDate("DATE_CREATION"))
-                .urlDocument(rs.getString("URL_DOCUMENT"))
-                .build();
-    }
+    
     private MapSqlParameterSource getSqlParameterSource(final Document document) {
         return new MapSqlParameterSource()
                 .addValue("nom",document.getNom())
