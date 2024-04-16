@@ -22,7 +22,6 @@ public class DaoConfig {
     }
 
     @Bean
-    @Primary
     public PropertiesFactoryBean docProperties() {
         PropertiesFactoryBean prop = new PropertiesFactoryBean();
         ClassPathResource[] resources = new ClassPathResource[]{
