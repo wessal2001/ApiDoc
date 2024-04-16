@@ -146,8 +146,13 @@ public class DocumentDaoImpl implements DocumentDao {
 
     @Override
     public List<Document> getDocumentByDate(Date date) {
-        return null;
-    }
+        List<Document> docs=new ArrayList<>();
+        try {
+            docs = jdbcTemplate.query(properties.getProperty(DOC_GET_ONE_BY_DATE), new MapSqlParameterSource(DOC_DATE, date), Document::baseMapper);
+        } catch (DataAccessException dataAccessException) {
+            log.info("document does not exist " + date);
+        }
+        return docs;        }
 
 
     private MapSqlParameterSource getSqlParameterSource(final Document document) {

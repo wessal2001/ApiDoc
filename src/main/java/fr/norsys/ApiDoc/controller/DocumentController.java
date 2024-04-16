@@ -11,7 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -53,6 +57,17 @@ public class DocumentController {
     public ResponseEntity<List<Document>> getDocumentByType(@PathVariable String type){
         return ResponseEntity.ok(documentService.getDocumentByType(type));
     }
+    @GetMapping("/getByDate")
+    public ResponseEntity<List<Document>> getDocumentByType(@RequestBody Map<String, String> requestBody){
+        String dateString = requestBody.get("date");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok(documentService.getDocumentByDate(date));    }
 
 
 }
