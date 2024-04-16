@@ -29,7 +29,7 @@ public class Document {
         document.setNom(resultSet.getString("NOM"));
         document.setType(resultSet.getString("TYPE"));
         document.setDateCreation(resultSet.getDate("DATE_CREATION"));
-        document.setUrlDocument(resultSet.getString("URL_CREATION"));
+        document.setUrlDocument(resultSet.getString("URL_DOCUMENT"));
 
         return document;
     }
