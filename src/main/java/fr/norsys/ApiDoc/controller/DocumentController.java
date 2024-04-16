@@ -27,7 +27,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DocumentController {
 
-
     private final DocumentService documentService;
 
     @GetMapping
