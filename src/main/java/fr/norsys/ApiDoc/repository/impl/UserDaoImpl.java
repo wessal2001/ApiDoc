@@ -23,7 +23,6 @@ private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 private final Properties sqlProperties;
 private static final String USER_ID = "id";
 private static final String USER_Id = "idUser";
-
 private static final String USER_GET_ALL="user.getAll";
 private static final String USER_GET_ONE="user.getOne";
 private static final String USER_CREATE="user.create";

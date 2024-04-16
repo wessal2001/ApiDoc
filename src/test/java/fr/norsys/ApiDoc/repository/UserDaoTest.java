@@ -20,7 +20,6 @@ public class UserDaoTest extends BaseTest{
     @Rollback
     public void testSaveUser() {
         User user = new User(0L,"jdoe","password","jdoe@gmail.com");
-        System.out.println(user.getIdUser());
         long userId = userDao.save(user);
         assertTrue(userId > 0);
     }

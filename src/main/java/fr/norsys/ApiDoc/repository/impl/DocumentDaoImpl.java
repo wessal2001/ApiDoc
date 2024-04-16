@@ -22,10 +22,7 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 
 
 @Repository
@@ -36,9 +33,19 @@ public class DocumentDaoImpl implements DocumentDao {
     private static final String SELECT_DOCUMENTS = "select.documents";
 
     private static final String DOC_GET_ONE = "document.getOne";
+    private static final String DOC_GET_ONE_BY_NAME = "document.getByName";
+
     private static final String DOC_ID ="id" ;
+    private static final String DOC_NAME ="nom" ;
+    private static final String DOC_TYPE ="type" ;
+    private static final String DOC_DATE ="date" ;
+
+
     private static final String DELETE_DOCUMENTS = "delete.document";
     private static final String INSERT_DOCUMENT="insert.document";
+    private static final String  DOC_GET_ONE_BY_TYPE = "document.getByType";
+    private static final String  DOC_GET_ONE_BY_DATE = "document.getByDate";
+
 
     @Value("${file.storage.location}")
     private  String storageLocation;
@@ -57,7 +64,7 @@ public class DocumentDaoImpl implements DocumentDao {
     public Optional<Document> getDocumentById(int id) {
         Optional<Document> doc=Optional.empty();
         try {
-            doc = Optional.of(jdbcTemplate.queryForObject(properties.getProperty(DOC_GET_ONE), new MapSqlParameterSource(DOC_ID, id), Document::baseMapper));
+            doc = Optional.ofNullable(jdbcTemplate.queryForObject(properties.getProperty(DOC_GET_ONE), new MapSqlParameterSource(DOC_ID, id), Document::baseMapper));
         } catch (DataAccessException dataAccessException) {
             log.info("document does not exist " + id);
         }
@@ -117,7 +124,30 @@ public class DocumentDaoImpl implements DocumentDao {
         System.out.println("start repo");
         return	jdbcTemplate.update(properties.getProperty(DELETE_DOCUMENTS),new MapSqlParameterSource().addValue("document_id", id));
     }
+    public List<Document> getDocumentByName(String name){
+        List<Document> docs=new ArrayList<>();
+        try {
+            docs = jdbcTemplate.query(properties.getProperty(DOC_GET_ONE_BY_NAME), new MapSqlParameterSource(DOC_NAME, name), Document::baseMapper);
+        } catch (DataAccessException dataAccessException) {
+            log.info("document does not exist " + name);
+        }
+        return docs;
+    }
 
+    @Override
+    public List<Document> getDocumentByType(String type) {
+        List<Document> docs=new ArrayList<>();
+        try {
+            docs = jdbcTemplate.query(properties.getProperty(DOC_GET_ONE_BY_TYPE), new MapSqlParameterSource(DOC_TYPE, type), Document::baseMapper);
+        } catch (DataAccessException dataAccessException) {
+            log.info("document does not exist " + type);
+        }
+        return docs;    }
+
+    @Override
+    public List<Document> getDocumentByDate(Date date) {
+        return null;
+    }
 
 
     private MapSqlParameterSource getSqlParameterSource(final Document document) {

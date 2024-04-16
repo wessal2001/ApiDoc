@@ -41,7 +41,12 @@ public class DocumentService {
     public Optional<Document> saveDocument(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         return documentDao.saveDocument(file);
     }
+    public List<Document> getDocumentByName(String name){
+        return documentDao.getDocumentByName(name);
+    }
 
 
-
+    public List<Document> getDocumentByType(String type) {
+        return documentDao.getDocumentByType(type);
+    }
 }
