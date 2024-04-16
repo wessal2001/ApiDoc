@@ -11,13 +11,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -53,5 +53,31 @@ public class DocumentServiceTest extends BaseTest {
 
     }
 
+    @Test
+     void should_return_doc_when_found(){
+        Document doc = documentService.getDocumentById(1);
+        assertEquals("testDoc",doc.getNom());
+     }
+    @Test
+    public void should_return_docs_by_name(){
+        List<Document> docs=documentService.getDocumentByName("testDoc");
+        assertEquals(1,docs.size());
 
+    }
+    @Test
+    public void should_return_empty_list_when_name_not_found(){
+        List<Document> docs=documentService.getDocumentByName("testDocxxx");
+        assertEquals(0,docs.size());
+    }
+    @Test
+    public void should_return_docs_by_type(){
+        List<Document> docs=documentService.getDocumentByType("type");
+        assertEquals(1,docs.size());
+
+    }
+    @Test
+    public void should_return_empty_list_when_type_not_found(){
+        List<Document> docs=documentService.getDocumentByType("typexx");
+        assertEquals(0,docs.size());
+    }
 }

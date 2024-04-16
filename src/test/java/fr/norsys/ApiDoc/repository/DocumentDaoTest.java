@@ -12,22 +12,27 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocumentDaoTest extends BaseTest{
     @Autowired
     DocumentDaoImpl documentDao;
     @Test
-    public void testFindById() {
+    public void should_return_doc_by_id() {
         Optional<Document> optionalDoc = documentDao.getDocumentById(1);
         assertTrue(optionalDoc.isPresent());
     }
-
+    @Test
+    public void should_return_docs_by_name(){
+        List<Document> docs=documentDao.getDocumentByName("testDoc");
+        assertEquals(1,docs.size());
+    }
     @Test
     @Rollback
     public void shouldReturnSavedDocument() throws IOException, NoSuchAlgorithmException {
@@ -41,6 +46,20 @@ public class DocumentDaoTest extends BaseTest{
         Optional<Document> document=documentDao.saveDocument(file);
         assertTrue(document.isPresent());
     }
+    @Test
+    public void should_return_empty_list_when_name_not_found(){
+        List<Document> docs=documentDao.getDocumentByName("testDocxxx");
+        assertEquals(0,docs.size());
+    }
+    @Test
+    public void should_return_docs_by_type(){
+        List<Document> docs=documentDao.getDocumentByType("type");
+        assertEquals(1,docs.size());
 
-
+    }
+    @Test
+    public void should_return_empty_list_when_type_not_found(){
+        List<Document> docs=documentDao.getDocumentByType("typexx");
+        assertEquals(0,docs.size());
+    }
 }
