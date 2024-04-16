@@ -1,12 +1,9 @@
 package fr.norsys.ApiDoc.repository.impl;
-
-import ch.qos.logback.core.Context;
 import fr.norsys.ApiDoc.model.User;
 import fr.norsys.ApiDoc.repository.UserDao;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
