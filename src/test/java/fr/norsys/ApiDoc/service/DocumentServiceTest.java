@@ -14,6 +14,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,6 +80,21 @@ public class DocumentServiceTest extends BaseTest {
     @Test
     public void should_return_empty_list_when_type_not_found(){
         List<Document> docs=documentService.getDocumentByType("typexx");
+        assertEquals(0,docs.size());
+    }
+    @Test
+    public void should_return_docs_by_date(){
+        LocalDate currentDate = LocalDate.of(2024, 4, 16);
+        java.util.Date date = java.util.Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        List<Document> docs=documentService.getDocumentByDate(date);
+        assertEquals(1,docs.size());
+
+    }
+    @Test
+    public void should_return_empty_list_when_date_not_found(){
+        LocalDate currentDate = LocalDate.of(2025, 4, 16);
+        java.util.Date date = java.util.Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        List<Document> docs=documentService.getDocumentByDate(date);
         assertEquals(0,docs.size());
     }
 }

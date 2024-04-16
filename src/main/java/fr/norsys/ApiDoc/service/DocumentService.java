@@ -49,4 +49,7 @@ public class DocumentService {
     public List<Document> getDocumentByType(String type) {
         return documentDao.getDocumentByType(type);
     }
+    public List<Document> getDocumentByDate(Date date) {
+        return documentDao.getDocumentByDate(date);
+    }
 }
