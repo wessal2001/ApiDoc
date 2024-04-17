@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 
 @RestController
@@ -68,6 +65,10 @@ public class DocumentController {
             e.printStackTrace();
         }
         return ResponseEntity.ok(documentService.getDocumentByDate(date));    }
+@GetMapping("/getByCriteria")
+    public ResponseEntity<List<Document>> getDocumentByCriteria(@RequestBody Document criteria) throws ParseException {
+    return ResponseEntity.ok(documentService.getDocumentsByCriteria(criteria.getNom(),criteria.getType(),criteria.getDateCreation(),new HashMap<>()));
 
+}
 
 }
