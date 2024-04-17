@@ -43,7 +43,7 @@ private static final String USER_CREATE="user.create";
     public Optional<User> findById(Long id) {
         Optional<User> user = Optional.empty();
         try {
-            user = Optional.of(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty(USER_GET_ONE), new MapSqlParameterSource(USER_ID, id), User::baseMapper));
+            user = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty(USER_GET_ONE), new MapSqlParameterSource(USER_ID, id), User::baseMapper));
         } catch (DataAccessException dataAccessException) {
             log.info("User does not exist" + id);
         }
@@ -52,12 +52,13 @@ private static final String USER_CREATE="user.create";
     public Optional<User> findByUsername(String username) {
         Optional<User> user = Optional.empty();
         try {
-            user = Optional.of(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty(USER_GET_ONE_BY_USERNAME), new MapSqlParameterSource(USER_USERNAME, username), User::baseMapper));
+            user = Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty(USER_GET_ONE_BY_USERNAME), new MapSqlParameterSource(USER_USERNAME, username), User::baseMapper));
         } catch (DataAccessException dataAccessException) {
             log.info("User does not exist" + username);
         }
         return user;
-    }    private MapSqlParameterSource getUserParams(User user) {
+    }
+    private MapSqlParameterSource getUserParams(User user) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("username", user.getUsername());
         parameters.addValue("email", user.getEmail());

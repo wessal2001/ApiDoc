@@ -1,6 +1,9 @@
 package fr.norsys.ApiDoc.controller;
 
+import fr.norsys.ApiDoc.dto.AuthenticationRequest;
+import fr.norsys.ApiDoc.dto.AuthenticationResponse;
 import fr.norsys.ApiDoc.model.User;
+import fr.norsys.ApiDoc.service.AuthenticationService;
 import fr.norsys.ApiDoc.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +15,15 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
+    private final AuthenticationService authenticationService;
     private final UserService userService;
     @PostMapping
-    ResponseEntity<User> save(@RequestBody User request){
-        return ResponseEntity.ok(userService.saveUser(request));
+    ResponseEntity<AuthenticationResponse> save(@RequestBody User request){
+        return ResponseEntity.ok(authenticationService.register(request));
+    }
+    @PostMapping("/login")
+    ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request){
+        return ResponseEntity.ok(authenticationService.authenticate(request));
     }
     @GetMapping("/{id}")
     ResponseEntity<User> findById(@PathVariable long id){
@@ -27,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(userService.findAllUsers());
     }
     @GetMapping("/signin/{username}")
-    ResponseEntity<User> findById(@PathVariable String username){
+    ResponseEntity<User> findByUsername(@PathVariable String username){
         return ResponseEntity.ok(userService.findUserByUdsername(username));
     }
 }

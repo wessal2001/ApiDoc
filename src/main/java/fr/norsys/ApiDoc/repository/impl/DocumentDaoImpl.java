@@ -43,7 +43,6 @@ public class DocumentDaoImpl implements DocumentDao {
     private static final String DOC_TYPE ="type" ;
     private static final String DOC_DATE ="date" ;
 
-
     private static final String DELETE_DOCUMENTS = "delete.document";
     private static final String INSERT_DOCUMENT="insert.document";
     private static final String  DOC_GET_ONE_BY_TYPE = "document.getByType";
