@@ -32,5 +32,16 @@ public class DaoConfig {
         return prop;
     }
 
+    @Bean
+    public PropertiesFactoryBean autorisationProperties() {
+        PropertiesFactoryBean prop = new PropertiesFactoryBean();
+        ClassPathResource[] resources = new ClassPathResource[]{
+                new ClassPathResource("sql/autorisation.properties"),
+        };
+        prop.setLocations(resources);
+        prop.setIgnoreResourceNotFound(true);
+        return prop;
+    }
+
 
 }

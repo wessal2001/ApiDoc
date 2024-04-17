@@ -121,7 +121,6 @@ public class DocumentDaoImpl implements DocumentDao {
 
     @Override
     public int deleteDocumentById(int id) {
-        System.out.println("start repo");
         return	jdbcTemplate.update(properties.getProperty(DELETE_DOCUMENTS),new MapSqlParameterSource().addValue("document_id", id));
     }
     public List<Document> getDocumentByName(String name){

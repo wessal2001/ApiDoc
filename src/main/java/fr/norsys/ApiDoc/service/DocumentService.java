@@ -4,20 +4,10 @@ import fr.norsys.ApiDoc.exception.NotFoundException;
 import fr.norsys.ApiDoc.model.Document;
 import fr.norsys.ApiDoc.repository.DocumentDao;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
