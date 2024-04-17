@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +63,21 @@ public class DocumentDaoTest extends BaseTest{
     @Test
     public void should_return_empty_list_when_type_not_found(){
         List<Document> docs=documentDao.getDocumentByType("typexx");
+        assertEquals(0,docs.size());
+    }
+    @Test
+    public void should_return_docs_by_date(){
+        LocalDate currentDate = LocalDate.of(2024, 4, 16);
+        Date date = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        List<Document> docs=documentDao.getDocumentByDate(date);
+        assertEquals(1,docs.size());
+
+    }
+    @Test
+    public void should_return_empty_list_when_date_not_found(){
+        LocalDate currentDate = LocalDate.of(2025, 4, 16);
+        Date date = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        List<Document> docs=documentDao.getDocumentByDate(date);
         assertEquals(0,docs.size());
     }
 }

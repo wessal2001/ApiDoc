@@ -22,6 +22,9 @@ import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -46,6 +49,7 @@ public class DocumentDaoImpl implements DocumentDao {
     private static final String  DOC_GET_ONE_BY_TYPE = "document.getByType";
     private static final String  DOC_GET_ONE_BY_DATE = "document.getByDate";
 
+    private static final String  DOC_GET_MANY = "document.getByManyCriteria";
 
     @Value("${file.storage.location}")
     private  String storageLocation;
@@ -145,7 +149,35 @@ public class DocumentDaoImpl implements DocumentDao {
 
     @Override
     public List<Document> getDocumentByDate(Date date) {
-        return null;
+        List<Document> docs=new ArrayList<>();
+        try {
+            docs = jdbcTemplate.query(properties.getProperty(DOC_GET_ONE_BY_DATE), new MapSqlParameterSource(DOC_DATE, date), Document::baseMapper);
+        } catch (DataAccessException dataAccessException) {
+            log.info("document does not exist " + date);
+        }
+        return docs;        }
+
+    @Override
+    public List<Document> getDocumentsByCriteria(String nom, String type, Date date, Map<String, String> metadata) throws ParseException {
+        if(date!=null){
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String result = outputDateFormat.format(date);
+            date=outputDateFormat.parse(result);
+        }
+        if(type==null)
+            type="%";
+        if(nom==null)
+            nom="%";
+        Document doc = new Document(0, nom, type,date, "%");
+        List<Document> docs=new ArrayList<>();
+        try {
+            MapSqlParameterSource parameterSource = getSqlParameterSource(doc);
+            docs = jdbcTemplate.query(properties.getProperty(DOC_GET_MANY), parameterSource, Document::baseMapper);
+        } catch (DataAccessException dataAccessException) {
+            log.info("documents don't not exist " );
+        }
+
+        return docs;
     }
 
 

@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -39,4 +42,11 @@ public class DocumentService {
     public List<Document> getDocumentByType(String type) {
         return documentDao.getDocumentByType(type);
     }
+    public List<Document> getDocumentByDate(Date date) {
+        return documentDao.getDocumentByDate(date);
+    }
+    public List<Document> getDocumentsByCriteria(String nom, String type, Date date, Map<String,String> metadata) throws ParseException {
+        return documentDao.getDocumentsByCriteria(nom,type,date,metadata);
+    }
+
 }

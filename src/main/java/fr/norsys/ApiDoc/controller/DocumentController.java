@@ -11,8 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @RestController
@@ -53,6 +54,21 @@ public class DocumentController {
     public ResponseEntity<List<Document>> getDocumentByType(@PathVariable String type){
         return ResponseEntity.ok(documentService.getDocumentByType(type));
     }
+    @GetMapping("/getByDate")
+    public ResponseEntity<List<Document>> getDocumentByType(@RequestBody Map<String, String> requestBody){
+        String dateString = requestBody.get("date");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok(documentService.getDocumentByDate(date));    }
+@GetMapping("/getByCriteria")
+    public ResponseEntity<List<Document>> getDocumentByCriteria(@RequestBody Document criteria) throws ParseException {
+    return ResponseEntity.ok(documentService.getDocumentsByCriteria(criteria.getNom(),criteria.getType(),criteria.getDateCreation(),new HashMap<>()));
 
+}
 
 }
