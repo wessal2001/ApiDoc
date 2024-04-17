@@ -17,8 +17,10 @@ import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -52,4 +54,8 @@ public class DocumentService {
     public List<Document> getDocumentByDate(Date date) {
         return documentDao.getDocumentByDate(date);
     }
+    public List<Document> getDocumentsByCriteria(String nom, String type, Date date, Map<String,String> metadata) throws ParseException {
+        return documentDao.getDocumentsByCriteria(nom,type,date,metadata);
+    }
+
 }
