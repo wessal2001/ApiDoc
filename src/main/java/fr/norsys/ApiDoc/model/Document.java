@@ -10,6 +10,7 @@ import lombok.Setter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,6 +24,8 @@ public class Document {
     private String type;
     private Date dateCreation;
     private String urlDocument;
+    private List<Metadata> metadata;
+
     public static Document baseMapper(ResultSet resultSet, int rowNumber) throws SQLException {
         Document document = new Document();
         document.setIdDocument(resultSet.getInt("ID_DOCUMENT"));

@@ -42,6 +42,16 @@ public class DaoConfig {
         prop.setIgnoreResourceNotFound(true);
         return prop;
     }
+    @Bean
+    public PropertiesFactoryBean metadataProperties() {
+        PropertiesFactoryBean prop = new PropertiesFactoryBean();
+        ClassPathResource[] resources = new ClassPathResource[]{
+                new ClassPathResource("sql/metadata.properties"),
+        };
+        prop.setLocations(resources);
+        prop.setIgnoreResourceNotFound(true);
+        return prop;
+    }
 
 
 }

@@ -168,7 +168,7 @@ public class DocumentDaoImpl implements DocumentDao {
             type="%";
         if(nom==null)
             nom="%";
-        Document doc = new Document(0, nom, type,date, "%");
+        Document doc = new Document(0, nom, type,date, "%",null);
         List<Document> docs=new ArrayList<>();
         try {
             MapSqlParameterSource parameterSource = getSqlParameterSource(doc);

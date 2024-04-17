@@ -31,5 +31,10 @@ public class UserService {
     public List<User> findAllUsers(){
         return userRepository.findAll();
     }
-
+    public User findUserByUdsername(String username){
+        return userRepository.findByUsername(username).orElseThrow(() -> {
+            throw new
+                    NotFoundException("User not found");
+        });
+    }
 }
