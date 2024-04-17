@@ -25,6 +25,7 @@ import static org.mockito.Mockito.when;
 
 
 public class DocumentServiceTest extends BaseTest {
+
     @Autowired
     DocumentService documentService;
     @Mock
