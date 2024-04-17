@@ -13,4 +13,5 @@ public interface UserDao {
 
     public List<User> findAll();
     public Optional<User> findById(Long id);
+    public Optional<User> findByUsername(String username);
 }

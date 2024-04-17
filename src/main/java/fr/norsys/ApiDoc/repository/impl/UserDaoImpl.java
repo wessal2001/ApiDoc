@@ -18,13 +18,16 @@ import java.util.Properties;
 @AllArgsConstructor
 @Slf4j
 public class UserDaoImpl implements UserDao {
-private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private static final String USER_USERNAME = "username";
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 @Resource(name = "sqlQueries")
 private final Properties sqlProperties;
 private static final String USER_ID = "id";
 private static final String USER_Id = "idUser";
 private static final String USER_GET_ALL="user.getAll";
 private static final String USER_GET_ONE="user.getOne";
+    private static final String USER_GET_ONE_BY_USERNAME="user.getOneByUsername";
+
 private static final String USER_CREATE="user.create";
 
     public long save(User user){
@@ -46,7 +49,15 @@ private static final String USER_CREATE="user.create";
         }
         return user;
     }
-    private MapSqlParameterSource getUserParams(User user) {
+    public Optional<User> findByUsername(String username) {
+        Optional<User> user = Optional.empty();
+        try {
+            user = Optional.of(namedParameterJdbcTemplate.queryForObject(sqlProperties.getProperty(USER_GET_ONE_BY_USERNAME), new MapSqlParameterSource(USER_USERNAME, username), User::baseMapper));
+        } catch (DataAccessException dataAccessException) {
+            log.info("User does not exist" + username);
+        }
+        return user;
+    }    private MapSqlParameterSource getUserParams(User user) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("username", user.getUsername());
         parameters.addValue("email", user.getEmail());
