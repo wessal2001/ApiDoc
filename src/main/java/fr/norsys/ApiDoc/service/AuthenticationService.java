@@ -32,7 +32,6 @@ public class AuthenticationService {
         return AuthenticationResponse
                 .builder()
                 .token(jwt)
-                .id(user.getIdUser())
                 .build();
     }
     public AuthenticationResponse authenticate(AuthenticationRequest request){
