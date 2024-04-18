@@ -3,12 +3,16 @@ package fr.norsys.ApiDoc.controller;
 import fr.norsys.ApiDoc.model.Document;
 import fr.norsys.ApiDoc.service.DocumentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
@@ -70,5 +74,29 @@ public class DocumentController {
     return ResponseEntity.ok(documentService.getDocumentsByCriteria(criteria.getNom(),criteria.getType(),criteria.getDateCreation(),new HashMap<>()));
 
 }
+    @GetMapping("/{documentId}/download")
+    public ResponseEntity<Resource> downloadDocument(@PathVariable Long documentId) throws IOException {
+        // Retrieve document by ID
+        Document document = documentService.getDocumentById(Math.toIntExact(documentId));
+
+        // Create InputStreamResource from document content
+        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(documentService.getInputStreamResource(document.getNom()).getContentAsByteArray()));
+
+        // Set response headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + document.getNom());
+
+        // Determine content type based on the file extension
+        String contentType = documentService.getContentTypeFromExtension(document.getNom());
+        headers.add(HttpHeaders.CONTENT_TYPE, contentType);
+
+        // Return ResponseEntity with InputStreamResource and headers
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(resource);
+    }
+
+
+
 
 }
