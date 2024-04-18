@@ -69,7 +69,8 @@ public class DocumentService {
             case "png":
                 return "image/png";
             case "docx":
-                return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";            default:
+                return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            default:
                 return "application/octet-stream";
         }
     }
