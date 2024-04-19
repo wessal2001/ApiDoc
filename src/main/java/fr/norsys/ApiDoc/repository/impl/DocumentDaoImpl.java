@@ -1,7 +1,10 @@
 package fr.norsys.ApiDoc.repository.impl;
 
+import fr.norsys.ApiDoc.model.Autorisation;
 import fr.norsys.ApiDoc.model.Document;
 import fr.norsys.ApiDoc.repository.DocumentDao;
+import fr.norsys.ApiDoc.service.AutorisationService;
+import fr.norsys.ApiDoc.service.UserService;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,6 +54,7 @@ public class DocumentDaoImpl implements DocumentDao {
     private static final String  DOC_GET_ONE_BY_DATE = "document.getByDate";
 
     private static final String  DOC_GET_MANY = "document.getByManyCriteria";
+    private static final String  DOCUMENT_Id = "ID_DOCUMENT";
 
     @Value("${file.storage.location}")
     private  String storageLocation;
@@ -57,7 +63,8 @@ public class DocumentDaoImpl implements DocumentDao {
 
     @Resource(name = "docProperties")
     private final Properties properties;
-
+    private final AutorisationService autorisationService;
+    private final UserService userService;
     @Override
     public List<Document> getAllDocuments() {
         return jdbcTemplate.query(properties.getProperty(SELECT_DOCUMENTS),Document::baseMapper);
@@ -98,25 +105,26 @@ public class DocumentDaoImpl implements DocumentDao {
     @Override
     public Optional<Document> saveDocument(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         Document document = new Document();
-
         String fileName = file.getOriginalFilename();
         int lastDotIndex = fileName.lastIndexOf('.');
         String extension = fileName.substring(lastDotIndex + 1);
-
         String absoluteFilePath = storageLocation + File.separator + fileName;
         File destinationFile = new File(absoluteFilePath);
-
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         Files.copy(file.getInputStream(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
         BasicFileAttributes attributes = Files.readAttributes(destinationFile.toPath(), BasicFileAttributes.class);
         Date creationDate = new Date(attributes.creationTime().toMillis());
-
         document.setNom(fileName);
         document.setType(extension);
         document.setDateCreation(creationDate);
         document.setUrlDocument(getHashFile(file));
 
-        jdbcTemplate.update(properties.getProperty(INSERT_DOCUMENT), getSqlParameterSource(document));
+        jdbcTemplate.update(properties.getProperty(INSERT_DOCUMENT), getSqlParameterSource(document), keyHolder, new String[]{DOCUMENT_Id});
+        if (keyHolder.getKey() != null) {
+            document.setIdDocument(keyHolder.getKey().intValue());
+        }
+        autorisationService.shareDocument(new Autorisation((int) userService.findUserByUdsername("admin23").getIdUser(),document.getIdDocument(),"read"));
+        autorisationService.shareDocument(new Autorisation((int) userService.findUserByUdsername("admin23").getIdUser(),document.getIdDocument(),"write"));
 
         return Optional.of(document);
     }

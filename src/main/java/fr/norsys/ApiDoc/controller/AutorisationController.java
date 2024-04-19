@@ -5,12 +5,9 @@ import fr.norsys.ApiDoc.model.Document;
 import fr.norsys.ApiDoc.service.AutorisationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -23,5 +20,14 @@ public class AutorisationController {
     @PostMapping()
     public ResponseEntity<Optional<Autorisation>> shareDocument(@RequestBody Autorisation autorisation) {
         return ResponseEntity.ok(autorisationService.shareDocument(autorisation));
+    }
+
+    @GetMapping("/doc-authorities/{idDoc}/{idUser}")
+    public List<Autorisation> getDocAuthorities(@PathVariable int idDoc, @PathVariable int idUser) {
+        return ResponseEntity.ok(autorisationService.getDocAuthorities(idDoc,idUser)).getBody();
+    }
+    @GetMapping
+    public ResponseEntity<List<Autorisation>> getAuthorities() {
+        return ResponseEntity.ok(autorisationService.getAuthorities());
     }
 }
