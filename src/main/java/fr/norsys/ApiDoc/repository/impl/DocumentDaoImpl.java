@@ -80,10 +80,7 @@ public class DocumentDaoImpl implements DocumentDao {
             log.info("document does not exist " + id);
         }
         return doc;
-
-
     }
-
     @Override
     public String getHashFile(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -115,27 +112,20 @@ public class DocumentDaoImpl implements DocumentDao {
         Files.copy(file.getInputStream(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         BasicFileAttributes attributes = Files.readAttributes(destinationFile.toPath(), BasicFileAttributes.class);
         Date creationDate = new Date(attributes.creationTime().toMillis());
-
         document.setNom(fileName);
         document.setType(extension);
         document.setDateCreation(creationDate);
         document.setUrlDocument(getHashFile(file));
-
         jdbcTemplate.update(properties.getProperty(INSERT_DOCUMENT), getSqlParameterSource(document), keyHolder, new String[]{DOCUMENT_Id});
         if (keyHolder.getKey() != null) {
             document.setIdDocument(keyHolder.getKey().intValue());
         }
-        autorisationService.shareDocument(new Autorisation((int) userService.findUserByUdsername("admin23").getIdUser(),document.getIdDocument(),"read"));
-        autorisationService.shareDocument(new Autorisation((int) userService.findUserByUdsername("admin23").getIdUser(),document.getIdDocument(),"write"));
-
-
+        //autorisationService.shareDocument(new Autorisation((int) userService.findUserByUdsername("admin23").getIdUser(),document.getIdDocument(),"read"));
+        //autorisationService.shareDocument(new Autorisation((int) userService.findUserByUdsername("admin23").getIdUser(),document.getIdDocument(),"write"));
         return Optional.of(document);
     }
-
-
     @Override
     public int deleteDocumentById(int id) {
-
         return	jdbcTemplate.update(properties.getProperty(DELETE_DOCUMENTS),new MapSqlParameterSource().addValue("document_id", id));
 
     }

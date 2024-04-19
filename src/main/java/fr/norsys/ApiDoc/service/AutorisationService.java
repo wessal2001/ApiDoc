@@ -24,4 +24,8 @@ public class AutorisationService {
         return autorisationDao.getAllAuthorities();
     }
 
+    public int deleteaUTORISATION(int id) {
+        return autorisationDao.deleteAutorisation(id);
+    }
+
 }

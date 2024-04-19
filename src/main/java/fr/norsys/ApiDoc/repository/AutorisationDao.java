@@ -11,4 +11,6 @@ public interface AutorisationDao {
     Optional<Autorisation> shareDocument(Autorisation autorisation);
     List<Autorisation> getDocAuthorities(int idDoc,int idUser);
     List<Autorisation> getAllAuthorities();
+    int deleteAutorisation(int id);
+
 }
