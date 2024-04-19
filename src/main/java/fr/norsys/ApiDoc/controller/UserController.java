@@ -38,4 +38,9 @@ public class UserController {
     ResponseEntity<User> findByUsername(@PathVariable String username){
         return ResponseEntity.ok(userService.findUserByUdsername(username));
     }
+    @GetMapping("/current")
+    public ResponseEntity<User> getCurrentUser() {
+        return ResponseEntity.ok(authenticationService.getCurrentUser());
+    }
+
 }

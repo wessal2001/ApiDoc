@@ -2,6 +2,7 @@ package fr.norsys.ApiDoc.service;
 
 import fr.norsys.ApiDoc.exception.NotFoundException;
 import fr.norsys.ApiDoc.model.Document;
+import fr.norsys.ApiDoc.model.Metadata;
 import fr.norsys.ApiDoc.repository.DocumentDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class DocumentService {
     public List<Document> getDocumentByDate(Date date) {
         return documentDao.getDocumentByDate(date);
     }
-    public List<Document> getDocumentsByCriteria(String nom, String type, Date date, Map<String,String> metadata) throws ParseException {
+    public List<Document> getDocumentsByCriteria(String nom, String type, Date date, List<Metadata> metadata) throws ParseException {
         return documentDao.getDocumentsByCriteria(nom,type,date,metadata);
     }
 

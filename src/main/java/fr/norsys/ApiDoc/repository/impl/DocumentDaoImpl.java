@@ -1,7 +1,11 @@
 package fr.norsys.ApiDoc.repository.impl;
 
+import fr.norsys.ApiDoc.model.Autorisation;
 import fr.norsys.ApiDoc.model.Document;
+import fr.norsys.ApiDoc.model.Metadata;
 import fr.norsys.ApiDoc.repository.DocumentDao;
+import fr.norsys.ApiDoc.service.AuthenticationService;
+import fr.norsys.ApiDoc.service.AutorisationService;
 import jakarta.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,12 +55,13 @@ public class DocumentDaoImpl implements DocumentDao {
     private static final String  DOC_GET_ONE_BY_DATE = "document.getByDate";
 
     private static final String  DOC_GET_MANY = "document.getByManyCriteria";
-
+    private static final String DOCUMENT_Id="ID_DOCUMENT";
     @Value("${file.storage.location}")
     private  String storageLocation;
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
-
+    private final AutorisationService autorisationService;
+    private final AuthenticationService authenticationService;
     @Resource(name = "docProperties")
     private final Properties properties;
 
@@ -93,8 +100,6 @@ public class DocumentDaoImpl implements DocumentDao {
         }
         return hexString.toString();
     }
-
-
     @Override
     public Optional<Document> saveDocument(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         Document document = new Document();
@@ -110,17 +115,18 @@ public class DocumentDaoImpl implements DocumentDao {
 
         BasicFileAttributes attributes = Files.readAttributes(destinationFile.toPath(), BasicFileAttributes.class);
         Date creationDate = new Date(attributes.creationTime().toMillis());
-
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         document.setNom(fileName);
         document.setType(extension);
         document.setDateCreation(creationDate);
         document.setUrlDocument(getHashFile(file));
-
-        jdbcTemplate.update(properties.getProperty(INSERT_DOCUMENT), getSqlParameterSource(document));
-
+        jdbcTemplate.update(properties.getProperty(INSERT_DOCUMENT), getSqlParameterSource(document), keyHolder, new String[]{DOCUMENT_Id});
+        if (keyHolder.getKey() != null) {
+            document.setIdDocument(keyHolder.getKey().intValue());
+        }
+       // autorisationService.shareDocument(new Autorisation())
         return Optional.of(document);
     }
-
 
     @Override
     public int deleteDocumentById(int id) {
@@ -157,7 +163,7 @@ public class DocumentDaoImpl implements DocumentDao {
         return docs;        }
 
     @Override
-    public List<Document> getDocumentsByCriteria(String nom, String type, Date date, Map<String, String> metadata) throws ParseException {
+    public List<Document> getDocumentsByCriteria(String nom, String type, Date date, List<Metadata> metadata) throws ParseException {
         if(date!=null){
             SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String result = outputDateFormat.format(date);

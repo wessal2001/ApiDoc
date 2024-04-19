@@ -67,7 +67,7 @@ public class DocumentController {
         return ResponseEntity.ok(documentService.getDocumentByDate(date));    }
 @PostMapping("/getByCriteria")
     public ResponseEntity<List<Document>> getDocumentByCriteria(@RequestBody Document criteria) throws ParseException {
-    return ResponseEntity.ok(documentService.getDocumentsByCriteria(criteria.getNom(),criteria.getType(),criteria.getDateCreation(),new HashMap<>()));
+    return ResponseEntity.ok(documentService.getDocumentsByCriteria(criteria.getNom(),criteria.getType(),criteria.getDateCreation(),criteria.getMetadata()));
 
 }
 
