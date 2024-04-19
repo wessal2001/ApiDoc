@@ -26,6 +26,7 @@ public class AutorisationDaoImpl implements AutorisationDao {
     private  static final String INSERT_AUTORISATION="insert.autorisation";
     private static final String GET_DOCS_AUTORISATIONS="autorisation.getByUserAndDoc";
     private static final String AUTHORITY_GET_ALL = "autorisation.getAll";
+    private static final String DELETE_AUTORISATION = "autorisation.delete";
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Resource(name = "autorisationProperties")
@@ -54,6 +55,11 @@ public class AutorisationDaoImpl implements AutorisationDao {
 
     }
 
+    @Override
+    public int deleteAutorisation(int id) {
+        return	jdbcTemplate.update(properties.getProperty(DELETE_AUTORISATION),new MapSqlParameterSource().addValue("iddocument", id));
+    }
+
 
     private MapSqlParameterSource getSqlParameterSource(final Autorisation autorisation) {
         return new MapSqlParameterSource()
@@ -61,4 +67,6 @@ public class AutorisationDaoImpl implements AutorisationDao {
                 .addValue("iduser",autorisation.getIdUser())
                 .addValue("droitacces",autorisation.getDroitAcces());
     }
+
+
 }
