@@ -38,10 +38,10 @@ public class AutorisationDaoImpl implements AutorisationDao {
     }
 
     @Override
-    public List<Autorisation> getDocAuthorities(int idDoc, int idUser) {
-        List<Autorisation> autorisations=new ArrayList<>();
+    public List<Autorisation> getDocAuthorities(int idDoc,int idUser) {
+        List<Autorisation> autorisations= new ArrayList<>();
         try {
-            autorisations = jdbcTemplate.query(properties.getProperty(GET_DOCS_AUTORISATIONS), new MapSqlParameterSource().addValue("iddocument",idDoc).addValue("iduser",idUser).addValue("droitacces","%"), Autorisation::baseMapper);
+            autorisations = jdbcTemplate.query(properties.getProperty(GET_DOCS_AUTORISATIONS), new MapSqlParameterSource().addValue("iddocument",idDoc).addValue("iduser",idUser), Autorisation::baseMapper);
         } catch (DataAccessException dataAccessException) {
             log.info("error fetching authorities");
         }

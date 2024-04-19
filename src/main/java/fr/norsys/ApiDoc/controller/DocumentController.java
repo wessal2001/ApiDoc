@@ -69,11 +69,10 @@ public class DocumentController {
             e.printStackTrace();
         }
         return ResponseEntity.ok(documentService.getDocumentByDate(date));    }
-@PostMapping("/getByCriteria")
+    @PostMapping("/getByCriteria")
     public ResponseEntity<List<Document>> getDocumentByCriteria(@RequestBody Document criteria) throws ParseException {
-    return ResponseEntity.ok(documentService.getDocumentsByCriteria(criteria.getNom(),criteria.getType(),criteria.getDateCreation(),new HashMap<>()));
-
-}
+        return ResponseEntity.ok(documentService.getDocumentsByCriteria(criteria.getNom(), criteria.getType(), criteria.getDateCreation(), new HashMap<>()));
+    }
     @GetMapping("/{documentId}/download")
     public ResponseEntity<Resource> downloadDocument(@PathVariable Long documentId) throws IOException {
         Document document = documentService.getDocumentById(Math.toIntExact(documentId));
@@ -90,7 +89,11 @@ public class DocumentController {
                 .headers(headers)
                 .body(resource);
     }
+    @GetMapping("/docs/{idUser}")
+    public ResponseEntity<List<Document>> getUserDocuments(@PathVariable long idUser) {
+        return ResponseEntity.ok(documentService.getDocsByUser(idUser));
 
+    }
 
 
 

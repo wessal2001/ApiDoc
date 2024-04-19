@@ -26,5 +26,5 @@ public interface DocumentDao {
     List<Document> getDocumentByType(String type);
     List<Document> getDocumentByDate(Date date);
     List<Document> getDocumentsByCriteria(String nom, String type, Date date,Map<String,String> metadata) throws ParseException;
-
+    List<Document> getUserDocs(long idUser);
 }

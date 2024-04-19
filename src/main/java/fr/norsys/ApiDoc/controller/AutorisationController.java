@@ -23,8 +23,8 @@ public class AutorisationController {
     }
 
     @GetMapping("/doc-authorities/{idDoc}/{idUser}")
-    public List<Autorisation> getDocAuthorities(@PathVariable int idDoc, @PathVariable int idUser) {
-        return ResponseEntity.ok(autorisationService.getDocAuthorities(idDoc,idUser)).getBody();
+    public ResponseEntity<List<Autorisation>> getDocAuthorities(@PathVariable int idDoc,@PathVariable int idUser) {
+        return ResponseEntity.ok(autorisationService.getDocAuthorities(idDoc,idUser));
     }
     @GetMapping
     public ResponseEntity<List<Autorisation>> getAuthorities() {

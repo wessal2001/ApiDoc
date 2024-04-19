@@ -53,9 +53,10 @@ public class DocumentDaoImpl implements DocumentDao {
     private static final String INSERT_DOCUMENT="insert.document";
     private static final String  DOC_GET_ONE_BY_TYPE = "document.getByType";
     private static final String  DOC_GET_ONE_BY_DATE = "document.getByDate";
-
+    private static final String  DOC_GET_BY_USER = "document.getUserDocs";
     private static final String  DOC_GET_MANY = "document.getByManyCriteria";
     private static final String  DOCUMENT_Id = "ID_DOCUMENT";
+    private static final String  USER_Id = "iduser";
 
     @Value("${file.storage.location}")
     private  String storageLocation;
@@ -191,6 +192,16 @@ public class DocumentDaoImpl implements DocumentDao {
 
         return docs;
     }
+
+    @Override
+    public List<Document> getUserDocs(long idUser) {
+        List<Document> docs=new ArrayList<>();
+        try {
+            docs = jdbcTemplate.query(properties.getProperty(DOC_GET_BY_USER), new MapSqlParameterSource(USER_Id, idUser), Document::baseMapper);
+        } catch (DataAccessException dataAccessException) {
+            log.info("document does not exist " );
+        }
+        return docs;        }
 
 
     private MapSqlParameterSource getSqlParameterSource(final Document document) {

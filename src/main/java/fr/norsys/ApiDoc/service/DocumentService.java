@@ -83,4 +83,7 @@ public class DocumentService {
         }
         return "";
     }
+    public List<Document> getDocsByUser(long idUser){
+        return documentDao.getUserDocs(idUser);
+    }
 }

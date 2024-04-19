@@ -1,12 +1,15 @@
 package fr.norsys.ApiDoc.service;
 
+import com.sun.security.auth.UserPrincipal;
 import fr.norsys.ApiDoc.exception.NotFoundException;
 import fr.norsys.ApiDoc.model.User;
 import fr.norsys.ApiDoc.repository.impl.UserDaoImpl;
 import lombok.AllArgsConstructor;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,9 +43,5 @@ public class UserService {
         });
     }
 
-    public User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        return findUserByUdsername(username);
-    }
+
 }
