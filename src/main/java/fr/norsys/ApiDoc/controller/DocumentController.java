@@ -76,21 +76,16 @@ public class DocumentController {
 }
     @GetMapping("/{documentId}/download")
     public ResponseEntity<Resource> downloadDocument(@PathVariable Long documentId) throws IOException {
-        // Retrieve document by ID
         Document document = documentService.getDocumentById(Math.toIntExact(documentId));
 
-        // Create InputStreamResource from document content
         InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(documentService.getInputStreamResource(document.getNom()).getContentAsByteArray()));
 
-        // Set response headers
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + document.getNom());
 
-        // Determine content type based on the file extension
         String contentType = documentService.getContentTypeFromExtension(document.getNom());
         headers.add(HttpHeaders.CONTENT_TYPE, contentType);
 
-        // Return ResponseEntity with InputStreamResource and headers
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(resource);

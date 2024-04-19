@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,6 +40,7 @@ public class DocumentDaoImpl implements DocumentDao {
     private static final String DOC_GET_ONE = "document.getOne";
     private static final String DOC_GET_ONE_BY_NAME = "document.getByName";
 
+    private static final String DOCUMENT_ID ="idDocument" ;
     private static final String DOC_ID ="id" ;
     private static final String DOC_NAME ="nom" ;
     private static final String DOC_TYPE ="type" ;
@@ -110,13 +113,17 @@ public class DocumentDaoImpl implements DocumentDao {
 
         BasicFileAttributes attributes = Files.readAttributes(destinationFile.toPath(), BasicFileAttributes.class);
         Date creationDate = new Date(attributes.creationTime().toMillis());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
         document.setNom(fileName);
         document.setType(extension);
         document.setDateCreation(creationDate);
         document.setUrlDocument(getHashFile(file));
 
-        jdbcTemplate.update(properties.getProperty(INSERT_DOCUMENT), getSqlParameterSource(document));
+        jdbcTemplate.update(properties.getProperty(INSERT_DOCUMENT), getSqlParameterSource(document),keyHolder, new String[]{DOCUMENT_ID});
+        if (keyHolder.getKey() != null) {
+            document.setIdDocument(keyHolder.getKey().intValue());
+        }
 
         return Optional.of(document);
     }
@@ -124,7 +131,9 @@ public class DocumentDaoImpl implements DocumentDao {
 
     @Override
     public int deleteDocumentById(int id) {
+
         return	jdbcTemplate.update(properties.getProperty(DELETE_DOCUMENTS),new MapSqlParameterSource().addValue("document_id", id));
+
     }
     public List<Document> getDocumentByName(String name){
         List<Document> docs=new ArrayList<>();

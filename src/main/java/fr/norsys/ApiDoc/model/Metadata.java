@@ -21,7 +21,7 @@ public class Metadata {
         metadata.setId(resultSet.getInt("ID_METADATA"));
         metadata.setKeyName(resultSet.getString("KEYNAME"));
         metadata.setValue(resultSet.getString("VALUE"));
-        metadata.setDocumentId(resultSet.getInt("DOCUMENTID"));
+        metadata.setDocumentId(resultSet.getInt("DocumentID"));
         return metadata;
     }
 }
