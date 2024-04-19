@@ -43,6 +43,7 @@ public class DocumentDaoImpl implements DocumentDao {
     private static final String DOC_GET_ONE = "document.getOne";
     private static final String DOC_GET_ONE_BY_NAME = "document.getByName";
 
+    private static final String DOCUMENT_ID ="idDocument" ;
     private static final String DOC_ID ="id" ;
     private static final String DOC_NAME ="nom" ;
     private static final String DOC_TYPE ="type" ;
@@ -114,6 +115,7 @@ public class DocumentDaoImpl implements DocumentDao {
         Files.copy(file.getInputStream(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         BasicFileAttributes attributes = Files.readAttributes(destinationFile.toPath(), BasicFileAttributes.class);
         Date creationDate = new Date(attributes.creationTime().toMillis());
+
         document.setNom(fileName);
         document.setType(extension);
         document.setDateCreation(creationDate);
@@ -126,13 +128,16 @@ public class DocumentDaoImpl implements DocumentDao {
         autorisationService.shareDocument(new Autorisation((int) userService.findUserByUdsername("admin23").getIdUser(),document.getIdDocument(),"read"));
         autorisationService.shareDocument(new Autorisation((int) userService.findUserByUdsername("admin23").getIdUser(),document.getIdDocument(),"write"));
 
+
         return Optional.of(document);
     }
 
 
     @Override
     public int deleteDocumentById(int id) {
+
         return	jdbcTemplate.update(properties.getProperty(DELETE_DOCUMENTS),new MapSqlParameterSource().addValue("document_id", id));
+
     }
     public List<Document> getDocumentByName(String name){
         List<Document> docs=new ArrayList<>();

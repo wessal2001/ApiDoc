@@ -15,6 +15,8 @@ import java.util.Properties;
 @RequiredArgsConstructor
 public class MetadataDaoImpl implements MetadataDao {
     private static final String SAVE_META ="metadata.add" ;
+    private static final String DELETE_META ="metadata.delete" ;
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Resource(name = "metadataProperties")
@@ -24,6 +26,13 @@ public class MetadataDaoImpl implements MetadataDao {
         jdbcTemplate.update(properties.getProperty(SAVE_META), getSqlParameterSource(metadata));
         return metadata;
     }
+
+    @Override
+    public int deleteMeatdate(int id) {
+        return	jdbcTemplate.update(properties.getProperty(DELETE_META),new MapSqlParameterSource().addValue("iddocument", id));
+
+    }
+
     private MapSqlParameterSource getSqlParameterSource(final Metadata metadata) {
         return new MapSqlParameterSource()
                 .addValue("keyname",metadata.getKeyName())

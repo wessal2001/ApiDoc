@@ -13,4 +13,9 @@ public class MetadataService {
     public Metadata saveMetadata(Metadata metadata){
         return metadataDao.saveMetadata(metadata);
     }
+
+    public int deleteMetadata(int id) {
+        return metadataDao.deleteMeatdate(id);
+    }
 }
+

@@ -18,5 +18,5 @@ spring:
     validateOnMigrate: true
 file:
   storage:
-    location: C:/Users/Ouissal/Desktop/docsStorage
+    location: C:/Users/CePC/Desktop/docsStorage
 
